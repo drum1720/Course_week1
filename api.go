@@ -60,7 +60,7 @@ type ProfileParams struct {
 type CreateParams struct {
 	Login  string `apivalidator:"required,min=10"`
 	Name   string `apivalidator:"paramname=full_name"`
-	Status string `apivalidator:"enum=user|moderator|admin,default=user"`
+	Status string `apivalidator:"default=user,enum=user|moderator|admin"`
 	Age    int    `apivalidator:"min=0,max=128"`
 }
 

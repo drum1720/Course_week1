@@ -103,7 +103,7 @@ func TestMyApi(t *testing.T) {
 				"error": "unknown method",
 			},
 		},
-		// ------
+		//------
 		Case{ // создаём юзера
 			Path:   ApiUserCreate,
 			Method: http.MethodPost,
