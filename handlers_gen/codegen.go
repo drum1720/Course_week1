@@ -106,9 +106,7 @@ func NewHandlersCodegen(filePatchIn, filePatchOut string) (*handlersCodegen, err
 }
 
 func (hc *handlersCodegen) GenerateAndWrite() error {
-	if err := hc.packageAndImportWrite(); err != nil {
-		return err
-	}
+	hc.packageAndImportWrite()
 
 	for _, decl := range hc.baseNode.Decls {
 		if ok := hc.needsMethods.AddDecl(decl, hc.sourceFileBuffer); !ok {
@@ -125,17 +123,17 @@ func (hc *handlersCodegen) GenerateAndWrite() error {
 	return nil
 }
 
-func (hc *handlersCodegen) packageAndImportWrite() (err error) {
-	_, err = fmt.Fprintln(hc.out, "package "+hc.baseNode.Name.Name)
-	_, err = fmt.Fprintln(hc.out)
-	_, err = fmt.Fprintln(hc.out, "import (")
-	_, err = fmt.Fprintln(hc.out, "\t\"encoding/json\"")
-	_, err = fmt.Fprintln(hc.out, "\t\"errors\"")
-	_, err = fmt.Fprintln(hc.out, "\t\"fmt\"")
-	_, err = fmt.Fprintln(hc.out, "\t\"net/http\"")
-	_, err = fmt.Fprintln(hc.out, "\t\"strconv\"")
-	_, err = fmt.Fprintln(hc.out, ")")
-	_, err = fmt.Fprintln(hc.out)
+func (hc *handlersCodegen) packageAndImportWrite() {
+	fmt.Fprintln(hc.out, "package "+hc.baseNode.Name.Name)
+	fmt.Fprintln(hc.out)
+	fmt.Fprintln(hc.out, "import (")
+	fmt.Fprintln(hc.out, "\t\"encoding/json\"")
+	fmt.Fprintln(hc.out, "\t\"errors\"")
+	fmt.Fprintln(hc.out, "\t\"fmt\"")
+	fmt.Fprintln(hc.out, "\t\"net/http\"")
+	fmt.Fprintln(hc.out, "\t\"strconv\"")
+	fmt.Fprintln(hc.out, ")")
+	fmt.Fprintln(hc.out)
 	return
 }
 

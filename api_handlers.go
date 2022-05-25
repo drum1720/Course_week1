@@ -28,33 +28,6 @@ func (o *OtherApi) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (o *OtherApi) create(rw http.ResponseWriter, r *http.Request) {
-	if r.Header.Get("X-Auth") != "100500" {
-		responseError(rw, ApiError{HTTPStatus: http.StatusForbidden, Err: errors.New("unauthorized")})
-		return
-	}
-	if r.Method != "POST" {
-		responseError(rw, ApiError{HTTPStatus: http.StatusNotAcceptable, Err: errors.New("bad method")})
-		return
-	}
-	othercreateparams := OtherCreateParams{}
-	if err := othercreateparams.FilingAndValidate(r); err != nil {
-		responseError(rw, ApiError{HTTPStatus: http.StatusBadRequest,Err:err})
-		return
-	}
-	response, err := o.Create(nil, othercreateparams)
-	if err != nil {
-		apiErr, ok := err.(ApiError)
-		if ok {
-			responseError(rw, apiErr)
-			return
-		}
-		responseError(rw, ApiError{HTTPStatus: http.StatusInternalServerError, Err:err})
-		return
-	}
-	responseResult(rw, err, response)
-}
-
 func (m *MyApi) profile(rw http.ResponseWriter, r *http.Request) {
 	profileparams := ProfileParams{}
 	if err := profileparams.FilingAndValidate(r); err != nil {
@@ -89,6 +62,33 @@ func (m *MyApi) create(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 	response, err := m.Create(nil, createparams)
+	if err != nil {
+		apiErr, ok := err.(ApiError)
+		if ok {
+			responseError(rw, apiErr)
+			return
+		}
+		responseError(rw, ApiError{HTTPStatus: http.StatusInternalServerError, Err:err})
+		return
+	}
+	responseResult(rw, err, response)
+}
+
+func (o *OtherApi) create(rw http.ResponseWriter, r *http.Request) {
+	if r.Header.Get("X-Auth") != "100500" {
+		responseError(rw, ApiError{HTTPStatus: http.StatusForbidden, Err: errors.New("unauthorized")})
+		return
+	}
+	if r.Method != "POST" {
+		responseError(rw, ApiError{HTTPStatus: http.StatusNotAcceptable, Err: errors.New("bad method")})
+		return
+	}
+	othercreateparams := OtherCreateParams{}
+	if err := othercreateparams.FilingAndValidate(r); err != nil {
+		responseError(rw, ApiError{HTTPStatus: http.StatusBadRequest,Err:err})
+		return
+	}
+	response, err := o.Create(nil, othercreateparams)
 	if err != nil {
 		apiErr, ok := err.(ApiError)
 		if ok {
